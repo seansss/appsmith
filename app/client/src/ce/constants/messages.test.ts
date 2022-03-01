@@ -1,13 +1,14 @@
 import {
+  ARE_YOU_SURE,
   CANNOT_MERGE_DUE_TO_UNCOMMITTED_CHANGES,
   CANNOT_PULL_WITH_LOCAL_UNCOMMITTED_CHANGES,
   CHANGES_ONLY_MIGRATION,
   CHANGES_ONLY_USER,
   CHANGES_USER_AND_MIGRATION,
+  COMMITTING_AND_PUSHING_CHANGES,
   COMMIT_AND_PUSH,
   COMMIT_CHANGES,
   COMMIT_TO,
-  COMMITTING_AND_PUSHING_CHANGES,
   CONNECT_BTN_LABEL,
   CONNECT_GIT,
   CONNECT_GIT_BETA,
@@ -18,10 +19,13 @@ import {
   COPIED_SSH_KEY,
   COPY_SSH_KEY,
   CREATE_NEW_BRANCH,
-  createMessage,
   DEPLOY,
   DEPLOY_KEY_TITLE,
   DEPLOY_KEY_USAGE_GUIDE_MESSAGE,
+  DISCARDING_AND_PULLING_CHANGES,
+  DISCARD_CHANGES,
+  DISCARD_CHANGES_WARNING,
+  DISCARD_SUCCESS,
   DISCONNECT,
   DISCONNECT_CAUSE_APPLICATION_BREAK,
   DISCONNECT_EXISTING_REPOSITORIES,
@@ -47,8 +51,8 @@ import {
   MERGE,
   MERGE_CHANGES,
   MERGE_CONFLICT_ERROR,
-  NO_MERGE_CONFLICT,
   NONE_REVERSIBLE_MESSAGE,
+  NO_MERGE_CONFLICT,
   PASTE_SSH_URL_INFO,
   PULL_CHANGES,
   REGENERATE_KEY_CONFIRM_MESSAGE,
@@ -65,6 +69,7 @@ import {
   SUBMIT,
   UPDATE_CONFIG,
   USE_DEFAULT_CONFIGURATION,
+  createMessage,
 } from "./messages";
 
 describe("messages", () => {
@@ -136,7 +141,7 @@ describe("git-sync messages", () => {
     },
     {
       key: "REMOTE_URL_INPUT_PLACEHOLDER",
-      value: "git://example.com:user/repo.git",
+      value: "ssh://example.com:user/repo.git",
     },
     { key: "COPIED_SSH_KEY", value: "Copied SSH Key" },
     {
@@ -271,8 +276,29 @@ describe("git-sync messages", () => {
       key: "CHANGES_USER_AND_MIGRATION",
       value: "Appsmith update and user changes since last commit",
     },
+    {
+      key: "DISCARD_CHANGES_WARNING",
+      value: "Discarding these changes will pull previous changes from Git.",
+    },
+    {
+      key: "DISCARD_SUCCESS",
+      value: "Discarded changes successfully.",
+    },
+    {
+      key: "DISCARDING_AND_PULLING_CHANGES",
+      value: "DISCARDING AND PULLING CHANGES...",
+    },
+    {
+      key: "ARE_YOU_SURE",
+      value: "Are you sure?",
+    },
+    {
+      key: "DISCARD_CHANGES",
+      value: "Discard changes",
+    },
   ];
   const functions = [
+    ARE_YOU_SURE,
     CANNOT_MERGE_DUE_TO_UNCOMMITTED_CHANGES,
     CANNOT_PULL_WITH_LOCAL_UNCOMMITTED_CHANGES,
     CHANGES_ONLY_MIGRATION,
@@ -295,11 +321,17 @@ describe("git-sync messages", () => {
     DEPLOY,
     DEPLOY_KEY_TITLE,
     DEPLOY_KEY_USAGE_GUIDE_MESSAGE,
+    DISCARDING_AND_PULLING_CHANGES,
+    DISCARD_CHANGES,
+    DISCARD_CHANGES_WARNING,
+    DISCARD_SUCCESS,
     DISCONNECT,
     DISCONNECT_CAUSE_APPLICATION_BREAK,
     DISCONNECT_EXISTING_REPOSITORIES,
     DISCONNECT_EXISTING_REPOSITORIES_INFO,
     DISCONNECT_GIT,
+    ERROR_GIT_AUTH_FAIL,
+    ERROR_GIT_INVALID_REMOTE,
     ERROR_WHILE_PULLING_CHANGES,
     FETCH_GIT_STATUS,
     FETCH_MERGE_STATUS,
@@ -335,8 +367,6 @@ describe("git-sync messages", () => {
     SUBMIT,
     UPDATE_CONFIG,
     USE_DEFAULT_CONFIGURATION,
-    ERROR_GIT_AUTH_FAIL,
-    ERROR_GIT_INVALID_REMOTE,
   ];
   functions.forEach((fn: () => string) => {
     it(`${fn.name} returns expected value`, () => {

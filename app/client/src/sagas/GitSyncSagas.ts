@@ -18,6 +18,8 @@ import {
 import { validateResponse } from "./ErrorSagas";
 import {
   commitToRepoSuccess,
+  discardChangesFailure,
+  discardChangesSuccess,
   fetchBranchesInit,
   fetchBranchesSuccess,
   fetchGitStatusInit,
@@ -642,13 +644,11 @@ function* importAppFromGitSaga(action: ConnectToGitReduxAction) {
       action.payload,
       organizationIdForImport,
     );
-
     const isValidResponse: boolean = yield validateResponse(
       response,
       false,
       getLogToSentryFromResponse(response),
     );
-
     if (isValidResponse) {
       const allOrgs = yield select(getCurrentOrg);
       const currentOrg = allOrgs.filter(
@@ -783,6 +783,34 @@ export function* generateSSHKeyPairSaga(action: GenerateSSHKeyPairReduxAction) {
   }
 }
 
+function* discardChanges() {
+  let response: ApiResponse | undefined;
+  try {
+    const appId: string = yield select(getCurrentApplicationId);
+    const doPull = true;
+    response = yield GitSyncAPI.discardChanges(appId, doPull);
+    const isValidResponse: boolean = yield validateResponse(
+      response,
+      false,
+      getLogToSentryFromResponse(response),
+    );
+    if (isValidResponse) {
+      yield put(discardChangesSuccess(response?.data));
+      // yield fetchGitStatusSaga();
+      const applicationId: string = yield select(getCurrentApplicationId);
+      const pageId = yield select(getCurrentPageId);
+      localStorage.setItem("GIT_DISCARD_CHANGES", "success");
+      window.open(
+        builderURL({ applicationId: applicationId, pageId: pageId }),
+        "_self",
+      );
+    }
+  } catch (error) {
+    yield put(discardChangesFailure({ error }));
+    localStorage.setItem("GIT_DISCARD_CHANGES", "failure");
+  }
+}
+
 export default function* gitSyncSagas() {
   yield all([
     takeLatest(ReduxActionTypes.COMMIT_TO_GIT_REPO_INIT, commitToGitRepoSaga),
@@ -821,5 +849,6 @@ export default function* gitSyncSagas() {
       generateSSHKeyPairSaga,
     ),
     takeLatest(ReduxActionTypes.FETCH_SSH_KEY_PAIR_INIT, getSSHKeyPairSaga),
+    takeLatest(ReduxActionTypes.GIT_DISCARD_CHANGES, discardChanges),
   ]);
 }

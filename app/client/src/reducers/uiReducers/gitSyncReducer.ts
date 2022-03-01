@@ -4,8 +4,8 @@ import {
   ReduxActionErrorTypes,
   ReduxActionTypes,
 } from "constants/ReduxActionConstants";
-import { GitSyncModalTab, GitConfig, MergeStatus } from "entities/GitSync";
 import { GetSSHKeyResponseData } from "actions/gitSyncActions";
+import { GitConfig, GitSyncModalTab, MergeStatus } from "entities/GitSync";
 
 const initialState: GitSyncReducerState = {
   isGitSyncModalOpen: false,
@@ -451,6 +451,7 @@ export type GitStatusData = {
   modifiedQueries: number;
   remoteBranch: string;
   modifiedJSObjects: number;
+  modifiedDatasources: number;
 };
 
 type GitErrorPayloadType = {
@@ -512,6 +513,8 @@ export type GitSyncReducerState = {
   isImportingApplicationViaGit?: boolean;
 
   gitImportError?: any;
+
+  isDiscarding?: boolean;
 };
 
 export default gitSyncReducer;
