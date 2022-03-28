@@ -276,7 +276,10 @@ class SelectComponent extends React.Component<
         : "";
 
     return (
-      <DropdownContainer compactMode={compactMode}>
+      <DropdownContainer
+        className={this.props.className}
+        compactMode={compactMode}
+      >
         <DropdownStyles dropDownWidth={this.getDropdownWidth()} id={widgetId} />
         {labelText && (
           <TextLabelWrapper compactMode={compactMode} ref={this.labelRef}>
@@ -358,6 +361,7 @@ class SelectComponent extends React.Component<
 }
 
 export interface SelectComponentProps extends ComponentProps {
+  className?: string;
   disabled?: boolean;
   onOptionSelected: (optionSelected: DropdownOption) => void;
   placeholder?: string;
@@ -380,6 +384,7 @@ export interface SelectComponentProps extends ComponentProps {
   value?: string;
   label?: string;
   filterText?: string;
+  hideCloseIcon?: boolean;
 }
 
 export default React.memo(SelectComponent);
