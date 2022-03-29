@@ -20,7 +20,6 @@ import {
   Tag,
   Position,
   IRef,
-  IRefObject,
 } from "@blueprintjs/core";
 import Tooltip from "components/ads/Tooltip";
 import { ReactComponent as HelpIcon } from "assets/icons/control/help.svg";
@@ -403,17 +402,9 @@ class BaseInputComponent extends React.Component<
         autoFocus={this.props.autoFocus}
         className={this.props.isLoading ? "bp3-skeleton" : Classes.FILL}
         disabled={this.props.disabled}
-<<<<<<< HEAD
-        inputRef={(el) => {
-          if (this.props.inputRef && el) {
-            this.props.inputRef.current = el;
-          }
-        }}
-=======
         inputRef={(ref: HTMLInputElement | null) =>
           this.props.inputRef && (this.props.inputRef.current = ref)
         }
->>>>>>> be82e2247 (Text wrapping)
         intent={this.props.intent}
         leftIcon={leftIcon}
         majorStepSize={null}
@@ -677,13 +668,9 @@ export interface BaseInputComponentProps extends ComponentProps {
   spellCheck?: boolean;
   maxNum?: number;
   minNum?: number;
-<<<<<<< HEAD
   inputRef?: MutableRefObject<
     HTMLTextAreaElement | HTMLInputElement | undefined | null
   >;
-=======
-  inputRef?: IRefObject<HTMLInputElement | HTMLTextAreaElement>;
->>>>>>> be82e2247 (Text wrapping)
 }
 
 export default BaseInputComponent;
