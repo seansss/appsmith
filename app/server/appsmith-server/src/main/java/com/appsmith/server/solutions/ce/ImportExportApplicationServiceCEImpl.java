@@ -21,7 +21,6 @@ import com.appsmith.server.domains.ActionCollection;
 import com.appsmith.server.domains.Application;
 import com.appsmith.server.domains.ApplicationJson;
 import com.appsmith.server.domains.ApplicationPage;
-import com.appsmith.server.domains.Collection;
 import com.appsmith.server.domains.NewAction;
 import com.appsmith.server.domains.NewPage;
 import com.appsmith.server.domains.Theme;
@@ -34,8 +33,8 @@ import com.appsmith.server.exceptions.AppsmithError;
 import com.appsmith.server.exceptions.AppsmithException;
 import com.appsmith.server.helpers.DefaultResourcesUtils;
 import com.appsmith.server.helpers.PolicyUtils;
-import com.appsmith.server.migrations.ApplicationVersion;
 import com.appsmith.server.helpers.TextUtils;
+import com.appsmith.server.migrations.ApplicationVersion;
 import com.appsmith.server.migrations.JsonSchemaMigration;
 import com.appsmith.server.migrations.JsonSchemaVersions;
 import com.appsmith.server.repositories.ActionCollectionRepository;
@@ -1928,7 +1927,7 @@ public class ImportExportApplicationServiceCEImpl implements ImportExportApplica
     }
 
     @Override
-    public Mono<Application> mergeApplicationJsonWithApplication(String applicationId, String branchName, ApplicationJson applicationJson) {
+    public Mono<Application> mergeApplicationJsonWithApplication(String applicationId, String branchName, ApplicationJson applicationJson, List<String> pagesToImport) {
         // Start the stopwatch to log the execution time
         Stopwatch processStopwatch = new Stopwatch("Merge application with application");
 
