@@ -299,15 +299,19 @@ interface ButtonComponentProps extends ComponentProps {
   iconName?: IconName;
   iconAlign?: Alignment;
   placement?: ButtonPlacement;
+  className?: string;
 }
 
+type RecaptchaV2ComponentPropType = {
+  children: any;
+  className?: string;
+  isDisabled?: boolean;
+  recaptchaType?: RecaptchaType;
+  handleError: (event: React.MouseEvent<HTMLElement>, error: string) => void;
+};
+
 function RecaptchaV2Component(
-  props: {
-    children: any;
-    isDisabled?: boolean;
-    recaptchaType?: RecaptchaType;
-    handleError: (event: React.MouseEvent<HTMLElement>, error: string) => void;
-  } & RecaptchaProps,
+  props: RecaptchaV2ComponentPropType & RecaptchaProps,
 ) {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isInvalidKey, setInvalidKey] = useState(false);
@@ -339,7 +343,7 @@ function RecaptchaV2Component(
     }
   };
   return (
-    <RecaptchaWrapper onClick={handleBtnClick}>
+    <RecaptchaWrapper className={props.className} onClick={handleBtnClick}>
       {props.children}
       <ReCAPTCHA
         onErrored={() => setInvalidKey(true)}
@@ -351,13 +355,16 @@ function RecaptchaV2Component(
   );
 }
 
+type RecaptchaV3ComponentPropType = {
+  children: any;
+  className?: string;
+  isDisabled?: boolean;
+  recaptchaType?: RecaptchaType;
+  handleError: (event: React.MouseEvent<HTMLElement>, error: string) => void;
+};
+
 function RecaptchaV3Component(
-  props: {
-    children: any;
-    isDisabled?: boolean;
-    recaptchaType?: RecaptchaType;
-    handleError: (event: React.MouseEvent<HTMLElement>, error: string) => void;
-  } & RecaptchaProps,
+  props: RecaptchaV3ComponentPropType & RecaptchaProps,
 ) {
   // Check if a string is a valid JSON string
   const checkValidJson = (inputString: string): boolean => {
@@ -402,18 +409,27 @@ function RecaptchaV3Component(
     `https://www.google.com/recaptcha/api.js?render=${validGoogleRecaptchaKey}`,
     AddScriptTo.HEAD,
   );
-  return <div onClick={handleBtnClick}>{props.children}</div>;
+  return (
+    <div className={props.className} onClick={handleBtnClick}>
+      {props.children}
+    </div>
+  );
 }
 
-function BtnWrapper(
-  props: {
-    children: any;
-    isDisabled?: boolean;
-    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
-  } & RecaptchaProps,
-) {
+type BtnWrapperPropType = {
+  children: any;
+  className?: string;
+  isDisabled?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+};
+
+function BtnWrapper(props: BtnWrapperPropType & RecaptchaProps) {
   if (!props.googleRecaptchaKey)
-    return <div onClick={props.onClick}>{props.children}</div>;
+    return (
+      <div className={props.className} onClick={props.onClick}>
+        {props.children}
+      </div>
+    );
   else {
     const handleError = (
       event: React.MouseEvent<HTMLElement>,
@@ -437,6 +453,7 @@ function BtnWrapper(
 function ButtonComponent(props: ButtonComponentProps & RecaptchaProps) {
   const btnWrapper = (
     <BtnWrapper
+      className={props.className}
       clickWithRecaptcha={props.clickWithRecaptcha}
       googleRecaptchaKey={props.googleRecaptchaKey}
       handleRecaptchaV2Loading={props.handleRecaptchaV2Loading}
