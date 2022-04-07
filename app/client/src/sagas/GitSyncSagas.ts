@@ -18,6 +18,10 @@ import {
 import { validateResponse } from "./ErrorSagas";
 import {
   commitToRepoSuccess,
+  deleteBranchError,
+  deleteBranchSuccess,
+  deleteBranchWarning,
+  deletingBranch,
   fetchBranchesInit,
   fetchBranchesSuccess,
   fetchGitStatusInit,
@@ -61,6 +65,8 @@ import {
 } from "selectors/applicationSelectors";
 import {
   createMessage,
+  DELETE_BRANCH_WARNING_CHECKED_OUT,
+  DELETE_BRANCH_WARNING_DEFAULT,
   ERROR_GIT_AUTH_FAIL,
   ERROR_GIT_INVALID_REMOTE,
   GIT_USER_UPDATED_SUCCESSFULLY,
@@ -783,6 +789,44 @@ export function* generateSSHKeyPairSaga(action: GenerateSSHKeyPairReduxAction) {
   }
 }
 
+export function* deleteBranch({ payload }: ReduxAction<any>) {
+  yield put(deletingBranch(payload));
+  const { branchToDelete } = payload;
+  let response: ApiResponse | undefined;
+  try {
+    const applicationId: string = yield select(getCurrentApplicationId);
+    const gitMetaData: GitApplicationMetadata = yield select(
+      getCurrentAppGitMetaData,
+    );
+    const currentBranch = gitMetaData?.branchName || "";
+    const defaultBranchName = gitMetaData?.defaultBranchName || "master";
+    if (defaultBranchName === branchToDelete) {
+      yield put(
+        deleteBranchWarning(createMessage(DELETE_BRANCH_WARNING_DEFAULT)),
+      );
+    } else if (currentBranch === branchToDelete) {
+      yield put(
+        deleteBranchWarning(createMessage(DELETE_BRANCH_WARNING_CHECKED_OUT)),
+      );
+    } else {
+      response = yield GitSyncAPI.deleteBranch(applicationId, branchToDelete);
+      const isValidResponse: boolean = yield validateResponse(
+        response,
+        false,
+        getLogToSentryFromResponse(response),
+      );
+      if (isValidResponse) {
+        yield put(deleteBranchSuccess(response?.data));
+        yield put(fetchBranchesInit({ pruneBranches: true }));
+      }
+    }
+  } catch (error) {
+    yield put(deleteBranchError(error));
+  } finally {
+    yield put(deletingBranch(false));
+  }
+}
+
 export default function* gitSyncSagas() {
   yield all([
     takeLatest(ReduxActionTypes.COMMIT_TO_GIT_REPO_INIT, commitToGitRepoSaga),
@@ -821,5 +865,6 @@ export default function* gitSyncSagas() {
       generateSSHKeyPairSaga,
     ),
     takeLatest(ReduxActionTypes.FETCH_SSH_KEY_PAIR_INIT, getSSHKeyPairSaga),
+    takeLatest(ReduxActionTypes.DELETE_BRANCH_INIT, deleteBranch),
   ]);
 }
