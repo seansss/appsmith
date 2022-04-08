@@ -19,7 +19,6 @@ import {
   ButtonPlacementTypes,
 } from "components/constants";
 import tinycolor from "tinycolor2";
-import { isArray } from "lodash";
 
 const punycode = require("punycode/");
 
