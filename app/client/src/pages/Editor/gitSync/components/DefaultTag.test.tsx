@@ -15,8 +15,9 @@ describe("DefaultTag", () => {
     expect(actual?.innerHTML.includes("DEFAULT")).toBeTruthy();
 
     // styles
-    expect(actual).toHaveStyleRule("display", "flex");
-    expect(actual).toHaveStyleRule("justify-content", "flex-end");
-    expect(actual).toHaveStyleRule("flex", "1");
+    expect(actual).toHaveStyleRule("display", "inline-block");
+    expect(actual).toHaveStyleRule("padding", "3px 7px");
+    expect(actual).toHaveStyleRule("position", "absolute");
+    expect(actual).toHaveStyleRule("right", "16%");
   });
 });

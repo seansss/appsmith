@@ -2,21 +2,21 @@ import Button, { Category, Size } from "components/ads/Button";
 import React from "react";
 import styled from "styled-components";
 
-const StyledDefaultTag = styled.div`
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
+const StyledButton = styled(Button)`
+  display: inline-block;
+  padding: 3px 7px;
+  position: absolute;
+  right: 16%;
 `;
 
 export default function DefaultTag() {
   return (
-    <StyledDefaultTag data-testid="t--default-tag">
-      <Button
-        category={Category.tertiary}
-        disabled
-        size={Size.xxs}
-        text={"DEFAULT"}
-      />
-    </StyledDefaultTag>
+    <StyledButton
+      category={Category.tertiary}
+      data-testid="t--default-tag"
+      disabled
+      size={Size.xxs}
+      text={"DEFAULT"}
+    />
   );
 }

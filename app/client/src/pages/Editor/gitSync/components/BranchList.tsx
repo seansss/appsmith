@@ -41,8 +41,7 @@ import {
   removeSpecialChars,
 } from "pages/Editor/gitSync/utils";
 import AnalyticsUtil from "utils/AnalyticsUtil";
-import { useFilteredBranches } from "../hooks/useFilteredBranches";
-import { useActiveHoverIndex } from "../hooks/useActiveHoverIndex";
+import { useActiveHoverIndex, useFilteredBranches } from "../hooks";
 import { BranchListItemContainer } from "./BranchListItemContainer";
 import { RemoteBranchList } from "./RemoteBranchList";
 import { LocalBranchList } from "./LocalBranchList";

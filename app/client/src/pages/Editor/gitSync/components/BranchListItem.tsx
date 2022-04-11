@@ -6,7 +6,7 @@ import { isEllipsisActive } from "utils/helpers";
 import { Position } from "@blueprintjs/core";
 import Text, { TextType } from "components/ads/Text";
 import DefaultTag from "./DefaultTag";
-import useHover from "../hooks/useHover";
+import { useHover } from "../hooks";
 import BranchMoreMenu from "./BranchMoreMenu";
 
 export function BranchListItem({
@@ -49,9 +49,10 @@ export function BranchListItem({
       >
         <Text onClick={onClick} ref={textRef} type={TextType.P1}>
           {branch}
+          {isDefault && <DefaultTag />}
         </Text>
       </Tooltip>
-      {isDefault && <DefaultTag />}
+
       {(hover || menuOpen) && (
         <BranchMoreMenu branchName={branch} setMenuOpen={setMenuOpen} />
       )}

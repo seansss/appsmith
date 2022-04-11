@@ -748,6 +748,9 @@ export const DELETE = () => "Delete";
 export const LOCAL_BRANCHES = () => "Local branches";
 export const REMOTE_BRANCHES = () => "Remote branches";
 
+export const DELETE_BRANCH_SUCCESS = (branchName: string) =>
+  `Successfully deleted branch: ${branchName}`;
+
 // warnings
 export const DELETE_BRANCH_WARNING_CHECKED_OUT = (currentBranchName: string) =>
   `Cannot delete checked out branch. Please check out other branch before deleting ${currentBranchName}.`;

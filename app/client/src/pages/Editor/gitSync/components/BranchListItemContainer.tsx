@@ -9,7 +9,8 @@ export const BranchListItemContainer = styled.div<{
   isDefault?: boolean;
 }>`
   padding: ${(props) =>
-    `${props.theme.spaces[4]}px ${props.theme.spaces[5]}px`};
+    `${props.theme.spaces[5]}px ${props.theme.spaces[5]}px`};
+  margin: ${(props) => `${props.theme.spaces[1]} 0`};
   ${(props) => getTypographyByKey(props, "p1")};
   cursor: pointer;
 
@@ -28,6 +29,10 @@ export const BranchListItemContainer = styled.div<{
   display: grid;
   grid-gap: 16px;
   grid-template-columns: 9fr 1fr;
+
+  & .bp3-popover-wrapper {
+    height: 22px;
+  }
 
   .${Classes.TEXT} {
     width: 0;

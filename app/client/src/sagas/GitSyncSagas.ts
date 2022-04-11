@@ -65,6 +65,7 @@ import {
 } from "selectors/applicationSelectors";
 import {
   createMessage,
+  DELETE_BRANCH_SUCCESS,
   DELETE_BRANCH_WARNING_CHECKED_OUT,
   DELETE_BRANCH_WARNING_DEFAULT,
   ERROR_GIT_AUTH_FAIL,
@@ -816,6 +817,10 @@ export function* deleteBranch({ payload }: ReduxAction<any>) {
         getLogToSentryFromResponse(response),
       );
       if (isValidResponse) {
+        Toaster.show({
+          text: createMessage(DELETE_BRANCH_SUCCESS),
+          variant: Variant.success,
+        });
         yield put(deleteBranchSuccess(response?.data));
         yield put(fetchBranchesInit({ pruneBranches: true }));
       }
